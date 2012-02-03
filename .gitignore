@@ -1,0 +1,6 @@
+config.yaml
+*~
+*.pyc
+local_config.py
+tmp
+venv
