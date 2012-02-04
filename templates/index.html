@@ -1,9 +1,9 @@
 <%def name="presel_input(fn,vals,excl=False)">
-<label for='${fn}'>${fn}</label> <input type='text' id='${fn}' name='${fn}' value="${vl(fn)}" /> 
+<label for='${fn}'>${fn.capitalize()}:</label> <input type='text' id='${fn}' name='${fn}' value="${vl(fn)}" /> ${err(fn)} <br />
 % for t in vals:
 <a class='set ${fn}${excl and ' exclusive' or ''}' href="#" value="${t}">${t}</a>; 
 % endfor
-${err(fn)}
+
 <br />
 </%def>
 <%def name="err(fn)">\
@@ -22,6 +22,9 @@ color:red;
 .success { 
 color:green;
 }
+.set {
+font-size: 80%;
+}
 </style>
 <script type='text/javascript' src='/static/zepto.min.js'></script>
 <script type='text/javascript' src='/static/index.js'></script>
@@ -32,15 +35,15 @@ color:green;
   <div class='success'>Your entry has been succesfully written.</div>
   % endif
   <form method='post'>
-    ##<label for='from'>From</label> <input type='text' name='from' value="${vl('from')}" /> ${err('from')}<br />
-    ${presel_input('from',origins,True)}
-    ##<label for='to'>To</label> <input type='text' name='to' value="${vl('to')}" /> ${err('to')}<br />
-    ${presel_input('to',recievers,True)}
+    <label for='amt'>Amount:</label> <input type='tel' name='amt' value="${vl('amt')}" /> ${err('amt')}<br />
+    ${presel_input('to',locations,True)}
+    ${presel_input('from',locations,True)}
+
 ${presel_input('tags',tags)}
-    <label for='amt'>Amount</label> <input type='text' name='amt' value="${vl('amt')}" /> ${err('amt')}<br />
+
 
 % for fn,fnp in {'currency':'currencies','method':'methods'}.items():    
-    <label for='${fn}'>${fn}</label> 
+    <label for='${fn}'>${fn.capitalize()}:</label> 
 <select name='${fn}'>
   % for cur in lists[fnp]:
   <option value='${cur}' \

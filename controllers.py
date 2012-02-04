@@ -6,12 +6,12 @@ from noodles.http import Response,Redirect
 from noodles.templates import render_to_string
 
 import yaml
-cfg = yaml.load(open('config.yaml','r').read())
+
 
 import gdata.docs
 import gdata.docs.service
 import gdata.spreadsheet.service
-import re,hashlib,time,datetime
+import re,hashlib,time,datetime,json,base64,urllib
 
 
 
@@ -28,6 +28,7 @@ usessions={}
 TALKOUT=True
 
 def index(request):
+    cfg = yaml.load(open('config.yaml','r').read())
     scook = request.cookies.get(cfg['cookie']['name'])
     resp = Response()
     #initialize a new session if we have to
@@ -46,9 +47,10 @@ def index(request):
         print 'initializing gd client'
         gd_client = gdata.spreadsheet.service.SpreadsheetsService()    
         single_use_token = gdata.auth.extract_auth_sub_token_from_url(request.url)
-        nxt = cfg['host']
-
+        fd = base64.b64encode(json.dumps(dict(request.params))) #encode current form values
+        nxt = cfg['host']+'?fd='+urllib.quote(fd)
         rdu  = gdata.service.GenerateAuthSubRequestUrl(cfg['host'], scopes, secure=secure, session=session)    
+
         rd = Redirect(rdu)
         if not single_use_token:
             print 'redirecting to %s'%rdu
@@ -75,7 +77,11 @@ def index(request):
     # worksheet_id_parts = worksheet.id.text.split('/')
     # worksheet_id = worksheet_id_parts[len(worksheet_id_parts) - 1]
     errs={} 
-    p={} ; pout = {}
+    if request.params.get('fd'):
+        p = json.loads(base64.b64decode(request.params.get('fd')))
+        pout = p
+    else:
+        p={} ; pout = {}
     written=False
     if request.method=='POST':
         p = dict(request.params) ; pout = dict(request.params)
@@ -106,11 +112,12 @@ def index(request):
                 written=True
                 p={}
     def vl(fn):
+        if fn=='when' and not p.get(fn):
+            return datetime.datetime.now().strftime( "%Y-%m-%dT%H:%MZ" )
         return p.get(fn) or ''
     rstr= render_to_string('/index.html',{'lists':{'currencies':cfg['currencies'],'methods':cfg['methods']}
                                           ,'tags':cfg['tags']
-                                          ,'origins':cfg['origins']
-                                          ,'recievers':cfg['recievers']
+                                          ,'locations':cfg['locations']
                                           ,'errs':errs
                                           ,'f':pout
                                           ,'vl':vl
