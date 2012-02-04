@@ -46,9 +46,9 @@ def index(request):
         print 'initializing gd client'
         gd_client = gdata.spreadsheet.service.SpreadsheetsService()    
         single_use_token = gdata.auth.extract_auth_sub_token_from_url(request.url)
-        nxt = re.compile('^http(s|)\:\/\/([^/]*)\/').search(request.url).group(0)
+        nxt = cfg['host']
 
-        rdu  = gdata.service.GenerateAuthSubRequestUrl(request.url, scopes, secure=secure, session=session)    
+        rdu  = gdata.service.GenerateAuthSubRequestUrl(cfg['host'], scopes, secure=secure, session=session)    
         rd = Redirect(rdu)
         if not single_use_token:
             print 'redirecting to %s'%rdu
