@@ -1,3 +1,5 @@
+#installing the codebase:
+
 cd MobileInput/
 virtualenv --no-site-packages venv
 source venv/bin/activate
@@ -5,3 +7,8 @@ pip install -r requirements.txt
 #git submodule update --init
 git clone git://github.com/guyromm/NoodlesFramework.git noodles
 pip install -r noodles/requirements.txt
+
+#create a functional google spreadsheet, that has at the very least the following columns ready (gdata api gives an obscure error in case it doesn't):
+from,to,tags,when,amt,currency,method
+
+#then, create config.yaml containing the spreadsheet id, worksheet id and some defaul tag and origin/direction defaults.
