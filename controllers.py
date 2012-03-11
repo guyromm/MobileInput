@@ -101,7 +101,7 @@ def index(request):
                 when = datetime.datetime.strptime(p.get('when'), "%Y-%m-%dT%H:%MZ" )
             except:
                 errs['when']='Could not parse ISO date'
-            pout['when']=when.strftime('%m/%d/%Y %H:%M')
+            pout['when']=(when).strftime('%m/%d/%Y %H:%M')
         #if we pass validation, let's write!
         if not len(errs):
             out_arr=dict(pout)
@@ -114,7 +114,7 @@ def index(request):
                 p={}
     def vl(fn):
         if fn=='when' and not p.get(fn):
-            return datetime.datetime.now().strftime( "%Y-%m-%dT%H:%MZ" )
+            return (datetime.datetime.now()+datetime.timedelta(seconds=int(cfg['time_offset']))).strftime( "%Y-%m-%dT%H:%MZ" )
         return p.get(fn) or ''
     rstr= render_to_string('/index.html',{'lists':{'currencies':cfg['currencies'],'methods':cfg['methods']}
                                           ,'tags':cfg['tags']
