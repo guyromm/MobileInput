@@ -13,11 +13,24 @@ function ISODateString(d){
 	  el.preventDefault();
 	  //extract our secondary class
 	  var tn = el.target.className.split(' ')[1];
-	  var excl = el.target.className.split(' ')[2];
+	  var excl = el.target.className.split(' ').indexOf('exclusive')!=-1;
+	  var defmethod = el.target.className.split(' ').indexOf('defmethod')!=-1;
 	  if (excl)
-	      $('#'+tn).val($(el.target).text());
+	  {
+	      var sval = $(el.target).text()
+	  }
 	  else
-	      $('#'+tn).val($('#'+tn).val()+($('#'+tn).val().length?', ':'')+$(el.target).text());
+	  {
+	      var sval = $('#'+tn).val()+($('#'+tn).val().length?', ':'')+$(el.target).text();
+	  }
+
+	  $('#'+tn).val(sval);
+	  if (defmethod)
+	  {
+	      var toset = def_methods[sval];
+	      console.log('setting method to %o (%o)',toset,tn);
+	      $('#method').val(toset);
+	  }
       });
       $('#now_lnk').bind('click',function(el) {
 	  var d = new Date();
