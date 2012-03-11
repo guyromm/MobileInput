@@ -11,6 +11,7 @@ function ISODateString(d){
   $(function() {
       $('.set').bind('click',function(el) {
 	  el.preventDefault();
+
 	  //extract our secondary class
 	  var tn = el.target.className.split(' ')[1];
 	  var excl = el.target.className.split(' ')[2];
@@ -19,8 +20,11 @@ function ISODateString(d){
 	  else
 	      $('#'+tn).val($('#'+tn).val()+($('#'+tn).val().length?', ':'')+$(el.target).text());
       });
+
       $('#now_lnk').bind('click',function(el) {
 	  var d = new Date();
 	  $('#when').val(ISODateString(d));
       });
+
+      $('#amt').focus();
   });

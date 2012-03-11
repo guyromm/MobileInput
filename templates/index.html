@@ -35,7 +35,7 @@ font-size: 80%;
   <div class='success'>Your entry has been succesfully written.</div>
   % endif
   <form method='post'>
-    <label for='amt'>Amount:</label> <input type='tel' name='amt' value="${vl('amt')}" /> ${err('amt')}<br />
+    <label for='amt'>Amount:</label> <input type='tel' id='amt' name='amt' value="${vl('amt')}" /> ${err('amt')}<br />
     ${presel_input('to',locations,True)}
     ${presel_input('from',locations,True)}
 
