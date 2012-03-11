@@ -29,6 +29,7 @@ TALKOUT=True
 
 def index(request):
     cfg = yaml.load(open('config.yaml','r').read())
+
     scook = request.cookies.get(cfg['cookie']['name'])
     resp = Response()
     #initialize a new session if we have to
@@ -117,7 +118,8 @@ def index(request):
         return p.get(fn) or ''
     rstr= render_to_string('/index.html',{'lists':{'currencies':cfg['currencies'],'methods':cfg['methods']}
                                           ,'tags':cfg['tags']
-                                          ,'locations':cfg['locations']
+                                          ,'locations':cfg['locations'].keys()
+                                          ,'def_methods':json.dumps(cfg['locations'])
                                           ,'errs':errs
                                           ,'f':pout
                                           ,'vl':vl
