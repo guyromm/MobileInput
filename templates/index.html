@@ -35,7 +35,8 @@ var def_methods = ${def_methods};
 <body>
   <div class='menu'><a href="/">reset</a></div>
   % if written:
-  <div class='success'>Your entry has been succesfully written.</div>
+<% we = written_entry %>
+  <div class='success'>Entry of ${we.get('currency')} ${we.get('amt')} [${we.get('from')} => ${we.get('to')}] has been saved.</div>
   % endif
   <form method='post'>
 

@@ -83,7 +83,7 @@ def index(request):
         pout = p
     else:
         p={} ; pout = {}
-    written=False
+    written=False ; written_entry={}
     if request.method=='POST':
         p = dict(request.params) ; pout = dict(request.params)
         
@@ -111,6 +111,7 @@ def index(request):
                 print 'writing %s to spread %s, worksheet %s'%(out_arr,spread_id,worksheet_id)
                 entry = gd_client.InsertRow(out_arr , spread_id, worksheet_id)
                 written=True
+                written_entry = out_arr
                 p={}
     def vl(fn):
         if fn=='when' and not p.get(fn):
@@ -123,6 +124,7 @@ def index(request):
                                           ,'errs':errs
                                           ,'f':pout
                                           ,'vl':vl
-                                          ,'written':written})
+                                          ,'written':written
+                                          ,'written_entry':written_entry})
     resp.body = rstr
     return resp
