@@ -4,6 +4,9 @@ filedesc: default boilerplate config for a new noodles project
 '''
 import os
 
+HOST='localhost'
+EXCEPTION_FLAVOR='text'
+USE_ALCHEMY_MW=False
 DEBUG = True
 TESTING = True
 AUTO_RELOAD=True

@@ -30,7 +30,7 @@ TALKOUT=True
 def index(request):
     cfg = yaml.load(open('config.yaml','r').read())
 
-    scook = request.cookies.get(cfg['cookie']['name'])
+    scook = request.cookies and request.cookies.get(cfg['cookie']['name'])
     resp = Response()
     #initialize a new session if we have to
     if not scook or scook not in usessions:
